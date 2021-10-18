@@ -141,7 +141,7 @@ router.get('/:id', function (req, res) {
 
 router.delete('/:id', function (req, res) {
     const { id } = req.params;
-    connection.query(`SELECT * FROM buckets WHERE id = ${id}`, function (err, rows) {
+    connection.query(`SELECT * FROM tasks WHERE id = ${id}`, function (err, rows) {
         if (err) {
             return res.status(400).send({
                 status: 'Failure',
@@ -152,10 +152,10 @@ router.delete('/:id', function (req, res) {
         if(isEmpty(rows)) {
             res.status(200).send({
                 status: 'success',
-                data: 'Bucket data not exist.'
+                data: 'Tasks data not exist.'
             });
         } else {
-            connection.query(`DELETE FROM buckets WHERE id = ${id}`, function (err1, rows1) {                
+            connection.query(`DELETE FROM tasks WHERE id = ${id}`, function (err1, rows1) {                
                 if (err) {
                     return res.status(400).send({
                         status: 'Failure',
@@ -164,7 +164,7 @@ router.delete('/:id', function (req, res) {
                 }
                 return res.status(200).send({
                     status: 'success',
-                    data: 'Bucket deleted successfully.'
+                    data: 'Task deleted successfully.'
                 });
             });
         }

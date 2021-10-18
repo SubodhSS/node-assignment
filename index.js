@@ -1,6 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const { isEmpty } = require('lodash');
+var cors = require('cors')
 
 const { connection } = require('./db.js');
 const { accessTokenSecret } = require('./constant');
@@ -9,7 +10,7 @@ const buckets = require('./routes/buckets');
 const tasks = require('./routes/tasks');
 
 const app = express();
-
+app.use(cors());
 
 app.use(express.json());
 app.all('*', checkUser);
@@ -31,6 +32,7 @@ function checkUser(req, res, next) {
         const token = authHeader.split(' ')[1];
         jwt.verify(token, accessTokenSecret, (err, user) => {
             if (err) {
+              console.log('err ###', err);
                 return res.sendStatus(403);
             }
 
@@ -65,8 +67,8 @@ app.post('/login', function (req, res) {
   }
 
   if(isEmpty(rows)) {
-    res.status(200).send({
-        status: 'success',
+    res.status(400).send({
+        status: 'Failure',
         data: 'Invalid user credentials'
     });
   } else {
